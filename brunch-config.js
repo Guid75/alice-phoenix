@@ -54,7 +54,7 @@ exports.config = {
   plugins: {
     elmBrunch: {
       elmFolder: "web/elm",
-      mainModules: ["src/App.elm"],
+      mainModules: ["src/Main.elm"],
       outputFolder: "../static/vendor"
     },
     babel: {

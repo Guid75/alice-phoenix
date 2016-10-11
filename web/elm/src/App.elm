@@ -6,7 +6,14 @@ import Html.Events exposing (..)
 import Http
 import Task
 import Json.Decode as Json
-
+import Material
+import Material.Scheme
+import Material.Button as Button
+import Material.Tabs as Tabs
+import Material.Icon as Icon
+import Material.Options as Options exposing (css)
+import Model
+import Update
 
 main : Program Never
 main =
@@ -18,39 +25,58 @@ main =
         }
 
 
-type alias Model =
-    { id : String
-    }
-
-
-type Msg
-    = NoOp
-    | UsersPlease
-    | UsersFetchSucceed String
-    | UsersFetchFail Http.Error
-
-
-init : ( Model, Cmd Msg )
-init =
-    initModel ! []
-
-
-initModel : Model
-initModel =
-    { id = ""
-    }
+studentsTab : Model -> Html Msg
+studentsTab model =
+    text "ok"
 
 
 view : Model -> Html Msg
 view model =
-    div
+    (div
         []
-        [ text <| "Id:" ++ model.id
-        , button
-            [ onClick UsersPlease ]
-            [ text "Click me" ]
-        ]
+     <|
+        List.concat
+            [ [ Tabs.render Mdl
+                    [ 0 ]
+                    model.mdl
+                    [ Tabs.ripple
+                    , Tabs.onSelectTab SelectTab
+                    , Tabs.activeTab model.tab
+                    ]
+                    [ Tabs.label
+                        [ Options.center ]
+                        [ Icon.i "info_outline"
+                        , Options.span [ css "width" "4px" ] []
+                        , text "Formations"
+                        ]
+                    , Tabs.label
+                        [ Options.center ]
+                        [ Icon.i "code"
+                        , Options.span [ css "width" "4px" ] []
+                        , text "Students"
+                        ]
+                    ]
+                    [ case model.tab of
+                        0 ->
+                            App.map FormationsMsg <| Formation.View.root model.formations
 
+                        _ ->
+                            studentsTab model
+                    ]
+              ]
+            ]
+    )
+        |> Material.Scheme.top
+
+handleFormationsUpdate : Model -> Formation.Types.Msg -> (Model, Cmd Msg)
+handleFormationsUpdate model msg =
+    let
+        (newFormationsModel, formationsMsg) =
+            Formation.State.update msg model.formations
+        newModel =
+            { model | formations = newFormationsModel }
+    in
+        (newModel, Cmd.none)
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -58,24 +84,38 @@ update msg model =
         NoOp ->
             model ! []
 
-        UsersPlease ->
-            model ! [ getUsers ]
+        FormationsPlease ->
+            model ! [ getFormations ]
 
-        UsersFetchSucceed id ->
-            { model | id = id } ! []
+        FormationsFetchSucceed formations ->
+            handleFormationsUpdate model (Formation.Types.SetFormations formations)
 
-        UsersFetchFail _ ->
+        FormationsFetchFail _ ->
             model ! []
 
+        SelectTab tab ->
+            { model | tab = tab } ! []
 
-getUsers : Cmd Msg
-getUsers =
-    Task.perform UsersFetchFail UsersFetchSucceed (Http.get decodeUsers "/users")
+        Mdl msg' ->
+            Material.update msg' model
+
+        FormationsMsg msg ->
+            handleFormationsUpdate model msg
 
 
-decodeUsers : Json.Decoder String
-decodeUsers =
-    Json.at [ "id" ] Json.string
+getFormations : Cmd Msg
+getFormations =
+    Task.perform FormationsFetchFail FormationsFetchSucceed (Http.get decodeFormations "/api/formations")
+
+
+decodeFormation : Json.Decoder String
+decodeFormation =
+    Json.at [ "title" ] Json.string
+
+
+decodeFormations : Json.Decoder (List String)
+decodeFormations =
+    Json.at [ "data" ] <| Json.list decodeFormation
 
 
 subscriptions : Model -> Sub Msg

@@ -5,6 +5,14 @@
 # is restricted to this project.
 use Mix.Config
 
+config :alice, Alice.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  database: "alice_repo",
+  username: "user",
+  password: "pass",
+  hostname: "localhost"
+
+
 # General application configuration
 config :alice,
   ecto_repos: [Alice.Repo]
