@@ -6,7 +6,8 @@ import Material
 import Model exposing (Model)
 import Update exposing (update)
 import View exposing (view)
-import Msg exposing (Msg(..))
+import Msg exposing (Msg(..), FormationMsg(..))
+import API
 
 
 main : Program Never
@@ -21,7 +22,7 @@ main =
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model.initialModel, Cmd.none )
+    ( Model.initialModel, API.fetchFormations (always NoOp) (FormationMsg' << GotFormations) )
 
 
 subscriptions : Model -> Sub Msg

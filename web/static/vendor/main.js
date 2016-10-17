@@ -14153,6 +14153,48 @@ var _user$project$Update$update = F2(
 		}
 	});
 
+var _user$project$View_Formations$formationsView = function (formations) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		A2(
+			_elm_lang$core$List$map,
+			function (formation) {
+				return A2(
+					_elm_lang$html$Html$div,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$style(
+							_elm_lang$core$Native_List.fromArray(
+								[
+									{ctor: '_Tuple2', _0: 'color', _1: 'red'}
+								]))
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text(formation.title)
+						]));
+			},
+			formations));
+};
+var _user$project$View_Formations$noFormationsView = A2(
+	_elm_lang$html$Html$div,
+	_elm_lang$core$Native_List.fromArray(
+		[]),
+	_elm_lang$core$Native_List.fromArray(
+		[
+			_elm_lang$html$Html$text('<No formations>')
+		]));
+var _user$project$View_Formations$view = function (model) {
+	var _p0 = model.formations;
+	if (_p0.ctor === 'Nothing') {
+		return _user$project$View_Formations$noFormationsView;
+	} else {
+		return _user$project$View_Formations$formationsView(_p0._0);
+	}
+};
+
 var _user$project$View$formationsTab = function (model) {
 	return _elm_lang$html$Html$text('formations');
 };
@@ -14224,7 +14266,7 @@ var _user$project$View$view = function (model) {
 									function () {
 									var _p0 = model.tab;
 									if (_p0 === 0) {
-										return _user$project$View$formationsTab(model);
+										return _user$project$View_Formations$view(model);
 									} else {
 										return _user$project$View$studentsTab(model);
 									}
@@ -14237,7 +14279,17 @@ var _user$project$View$view = function (model) {
 var _user$project$Main$subscriptions = function (model) {
 	return A2(_debois$elm_mdl$Material$subscriptions, _user$project$Msg$Mdl, model);
 };
-var _user$project$Main$init = {ctor: '_Tuple2', _0: _user$project$Model$initialModel, _1: _elm_lang$core$Platform_Cmd$none};
+var _user$project$Main$init = {
+	ctor: '_Tuple2',
+	_0: _user$project$Model$initialModel,
+	_1: A2(
+		_user$project$API$fetchFormations,
+		_elm_lang$core$Basics$always(_user$project$Msg$NoOp),
+		function (_p0) {
+			return _user$project$Msg$FormationMsg$(
+				_user$project$Msg$GotFormations(_p0));
+		})
+};
 var _user$project$Main$main = {
 	main: _elm_lang$html$Html_App$program(
 		{init: _user$project$Main$init, view: _user$project$View$view, update: _user$project$Update$update, subscriptions: _user$project$Main$subscriptions})

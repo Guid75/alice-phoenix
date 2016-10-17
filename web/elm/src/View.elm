@@ -9,6 +9,8 @@ import Material.Icon as Icon
 import Material.Options as Options exposing (css)
 import Model exposing (Model)
 import Msg exposing (Msg(..))
+import View.Formations
+
 
 studentsTab : Model -> Html Msg
 studentsTab model =
@@ -49,7 +51,7 @@ view model =
                     [ case model.tab of
                         0 ->
                             --App.map FormationsMsg <| Formation.View.root model.formations
-                            formationsTab model
+                            View.Formations.view model
 
                         _ ->
                             studentsTab model

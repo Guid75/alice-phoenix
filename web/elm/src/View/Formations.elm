@@ -1,13 +1,32 @@
 module View.Formations exposing (view)
 
-import Model exposing (Model)
-
-import Html exposing (div)
+import Html exposing (..)
 import Html.Attributes exposing (style)
 import Html.Events exposing (onClick)
+import Msg exposing (Msg(..))
+import Types exposing (Formation)
+import Model exposing (Model)
+
 
 view : Model -> Html Msg
 view model =
+    case model.formations of
+        Nothing ->
+            noFormationsView
+
+        Just formations ->
+            formationsView formations
+
+
+noFormationsView : Html Msg
+noFormationsView =
+    div
+        []
+        [ text "<No formations>" ]
+
+
+formationsView : List Formation -> Html Msg
+formationsView formations =
     div
         []
         (List.map
@@ -17,7 +36,7 @@ view model =
                         [ ( "color", "red" )
                         ]
                     ]
-                    [ text formation ]
+                    [ text formation.title ]
             )
-            model.formations
+            formations
         )
