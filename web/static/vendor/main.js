@@ -14195,93 +14195,77 @@ var _user$project$View_Formations$view = function (model) {
 	}
 };
 
+var _user$project$View$view = function (model) {
+	return _debois$elm_mdl$Material_Scheme$top(
+		A4(
+			_debois$elm_mdl$Material_Layout$render,
+			_user$project$Msg$Mdl,
+			model.mdl,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_debois$elm_mdl$Material_Layout$selectedTab(model.tab),
+					_debois$elm_mdl$Material_Layout$onSelectTab(_user$project$Msg$SelectTab),
+					_debois$elm_mdl$Material_Layout$fixedHeader
+				]),
+			{
+				header: _elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_debois$elm_mdl$Material_Layout$row,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A2(
+								_debois$elm_mdl$Material_Layout$title,
+								_elm_lang$core$Native_List.fromArray(
+									[]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html$text('ALICE')
+									]))
+							]))
+					]),
+				drawer: _elm_lang$core$Native_List.fromArray(
+					[]),
+				tabs: {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text('formations'),
+							_elm_lang$html$Html$text('Students'),
+							_elm_lang$html$Html$text('Another thing')
+						]),
+					_1: _elm_lang$core$Native_List.fromArray(
+						[
+							_debois$elm_mdl$Material_Color$background(
+							A2(_debois$elm_mdl$Material_Color$color, _debois$elm_mdl$Material_Color$Teal, _debois$elm_mdl$Material_Color$S400))
+						])
+				},
+				main: _elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('content')
+					])
+			}));
+};
 var _user$project$View$formationsTab = function (model) {
 	return _elm_lang$html$Html$text('formations');
 };
 var _user$project$View$studentsTab = function (model) {
 	return _elm_lang$html$Html$text('students');
 };
-var _user$project$View$view = function (model) {
-	return _debois$elm_mdl$Material_Scheme$top(
-		A2(
-			_elm_lang$html$Html$div,
-			_elm_lang$core$Native_List.fromArray(
-				[]),
-			_elm_lang$core$List$concat(
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$core$Native_List.fromArray(
-						[
-							A6(
-							_debois$elm_mdl$Material_Tabs$render,
-							_user$project$Msg$Mdl,
-							_elm_lang$core$Native_List.fromArray(
-								[0]),
-							model.mdl,
-							_elm_lang$core$Native_List.fromArray(
-								[
-									_debois$elm_mdl$Material_Tabs$ripple,
-									_debois$elm_mdl$Material_Tabs$onSelectTab(_user$project$Msg$SelectTab),
-									_debois$elm_mdl$Material_Tabs$activeTab(model.tab)
-								]),
-							_elm_lang$core$Native_List.fromArray(
-								[
-									A2(
-									_debois$elm_mdl$Material_Tabs$label,
-									_elm_lang$core$Native_List.fromArray(
-										[_debois$elm_mdl$Material_Options$center]),
-									_elm_lang$core$Native_List.fromArray(
-										[
-											_debois$elm_mdl$Material_Icon$i('info_outline'),
-											A2(
-											_debois$elm_mdl$Material_Options$span,
-											_elm_lang$core$Native_List.fromArray(
-												[
-													A2(_debois$elm_mdl$Material_Options$css, 'width', '4px')
-												]),
-											_elm_lang$core$Native_List.fromArray(
-												[])),
-											_elm_lang$html$Html$text('Formations')
-										])),
-									A2(
-									_debois$elm_mdl$Material_Tabs$label,
-									_elm_lang$core$Native_List.fromArray(
-										[_debois$elm_mdl$Material_Options$center]),
-									_elm_lang$core$Native_List.fromArray(
-										[
-											_debois$elm_mdl$Material_Icon$i('code'),
-											A2(
-											_debois$elm_mdl$Material_Options$span,
-											_elm_lang$core$Native_List.fromArray(
-												[
-													A2(_debois$elm_mdl$Material_Options$css, 'width', '4px')
-												]),
-											_elm_lang$core$Native_List.fromArray(
-												[])),
-											_elm_lang$html$Html$text('Students')
-										]))
-								]),
-							_elm_lang$core$Native_List.fromArray(
-								[
-									function () {
-									var _p0 = model.tab;
-									if (_p0 === 0) {
-										return _user$project$View_Formations$view(model);
-									} else {
-										return _user$project$View$studentsTab(model);
-									}
-								}()
-								]))
-						])
-					]))));
-};
 
 var _user$project$Main$subscriptions = function (model) {
 	return A2(_debois$elm_mdl$Material$subscriptions, _user$project$Msg$Mdl, model);
 };
+var _user$project$Main$model = _user$project$Model$initialModel;
 var _user$project$Main$init = {
 	ctor: '_Tuple2',
-	_0: _user$project$Model$initialModel,
+	_0: _elm_lang$core$Native_Utils.update(
+		_user$project$Main$model,
+		{
+			mdl: A2(_debois$elm_mdl$Material_Layout$setTabsWidth, 1920, _user$project$Main$model.mdl)
+		}),
 	_1: A2(
 		_user$project$API$fetchFormations,
 		_elm_lang$core$Basics$always(_user$project$Msg$NoOp),

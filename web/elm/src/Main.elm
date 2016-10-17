@@ -3,6 +3,7 @@ port module Main exposing (..)
 import Html exposing (..)
 import Html.App as App
 import Material
+import Material.Layout as Layout
 import Model exposing (Model)
 import Update exposing (update)
 import View exposing (view)
@@ -20,9 +21,13 @@ main =
         }
 
 
+model =
+    Model.initialModel
+
+
 init : ( Model, Cmd Msg )
 init =
-    ( Model.initialModel, API.fetchFormations (always NoOp) (FormationMsg' << GotFormations) )
+    ( { model | mdl = Layout.setTabsWidth 1920 model.mdl }, API.fetchFormations (always NoOp) (FormationMsg' << GotFormations) )
 
 
 subscriptions : Model -> Sub Msg
