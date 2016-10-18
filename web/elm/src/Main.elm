@@ -21,13 +21,15 @@ main =
         }
 
 
-model =
-    Model.initialModel
+
+-- model =
+--     Model.initialModel
+-- { model | mdl = Layout.setTabsWidth 120 model.mdl }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( { model | mdl = Layout.setTabsWidth 1920 model.mdl }, API.fetchFormations (always NoOp) (FormationMsg' << GotFormations) )
+    ( Model.initialModel, API.fetchFormations (always NoOp) (FormationMsg' << GotFormations) )
 
 
 subscriptions : Model -> Sub Msg
