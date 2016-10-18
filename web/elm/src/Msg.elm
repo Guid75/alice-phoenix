@@ -20,3 +20,4 @@ type UserMsg
 type FormationMsg
     = FetchFormations
     | GotFormations (List Formation)
+    | NewFormation

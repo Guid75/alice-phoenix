@@ -10,7 +10,7 @@ import Types exposing (User, Formation)
 
 type alias Model =
     { mdl : Material.Model
-    , tab : Int
+    , currentTab : Int
     , users : Maybe (List User)
     , formations : Maybe (List Formation)
     }
@@ -19,7 +19,7 @@ type alias Model =
 initialModel : Model
 initialModel =
     { mdl = Material.model
-    , tab = 0
+    , currentTab = 0
     , users = Nothing
     , formations = Nothing
     }

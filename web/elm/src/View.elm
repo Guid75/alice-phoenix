@@ -19,16 +19,21 @@ studentsTab model =
     text "students"
 
 
-formationsTab : Model -> Html Msg
-formationsTab model =
-    text "formations"
+getContent : Model -> Html Msg
+getContent model =
+    case model.currentTab of
+        0 ->
+            View.Formations.view model
+
+        _ ->
+            studentsTab model
 
 
 view : Model -> Html Msg
 view model =
     Layout.render Mdl
         model.mdl
-        [ Layout.selectedTab model.tab
+        [ Layout.selectedTab model.currentTab
         , Layout.onSelectTab SelectTab
         , Layout.fixedHeader
         ]
@@ -41,9 +46,9 @@ view model =
               ]
             , [ Color.background (Color.color Color.Teal Color.S400) ]
             )
-        , main = [ text "content" ]
+        , main = [ getContent model ]
         }
-        |> Material.Scheme.top
+        |> Material.Scheme.topWithScheme Color.Teal Color.Red
 
 
 

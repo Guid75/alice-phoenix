@@ -19,7 +19,7 @@ update msg model =
             updateFormationMsg msg model
 
         SelectTab tab ->
-            { model | tab = tab } ! []
+            { model | currentTab = tab } ! []
 
         NoOp ->
             model ! []
@@ -43,3 +43,6 @@ updateFormationMsg msg model =
 
         GotFormations formations ->
             { model | formations = Just formations } ! []
+
+        NewFormation ->
+            model ! []
