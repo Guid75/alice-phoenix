@@ -1,14 +1,16 @@
 module Update exposing (update)
 
 import Material
+import Navigation
 import Model exposing (Model)
 import Msg exposing (Msg(..), UserMsg(..), FormationMsg(..))
 import API
+import Route exposing (Location(..))
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case msg of
+    case (Debug.log "msg" msg) of
         Mdl msg' ->
             Material.update msg' model
 
@@ -19,7 +21,18 @@ update msg model =
             updateFormationMsg msg model
 
         SelectTab tab ->
-            { model | currentTab = tab } ! []
+            case tab of
+                0 -> model ! [ Navigation.newUrl (Route.urlFor Formations) ]
+                1 -> model ! [ Navigation.newUrl (Route.urlFor Users) ]
+                _ -> model ! [ Navigation.newUrl (Route.urlFor Home) ]
+
+        NavigateTo maybeLocation ->
+            case maybeLocation of
+                Nothing ->
+                    model ! []
+
+                Just location ->
+                    model ! [ Navigation.newUrl (Route.urlFor location) ]
 
         NoOp ->
             model ! []
@@ -43,6 +56,3 @@ updateFormationMsg msg model =
 
         GotFormations formations ->
             { model | formations = Just formations } ! []
-
-        NewFormation ->
-            model ! []

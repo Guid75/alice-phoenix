@@ -4,6 +4,7 @@ import Html exposing (..)
 import Html.Attributes exposing (style)
 import Html.Events exposing (onClick)
 import Msg exposing (Msg(..), FormationMsg(..))
+import Route exposing (Location(..))
 import Types exposing (Formation)
 import Model exposing (Model)
 import Material.Table as Table
@@ -21,7 +22,7 @@ view model =
             model.mdl
             [ Button.raised
             , Button.ripple
-            , Button.onClick (FormationMsg' NewFormation)
+            , Button.onClick <| NavigateTo <| Just NewFormation
             , Options.css "margin" "5px 5px"
             ]
             [ text "New formation" ]

@@ -12,6 +12,7 @@ import Material.Color as Color
 import Model exposing (Model)
 import Msg exposing (Msg(..))
 import View.Formations
+import Route exposing (Location(..))
 
 
 studentsTab : Model -> Html Msg
@@ -21,19 +22,47 @@ studentsTab model =
 
 getContent : Model -> Html Msg
 getContent model =
-    case model.currentTab of
-        0 ->
+    case model.route of
+        Just Formations ->
             View.Formations.view model
 
-        _ ->
+        Just NewFormation ->
+            View.Formations.view model
+
+        Just Users ->
             studentsTab model
+
+        Just NewUser ->
+            studentsTab model
+
+        _ ->
+            div [] []
+
+
+routeToTab : Model -> Int
+routeToTab model =
+    case model.route of
+        Just Formations ->
+            0
+
+        Just NewFormation ->
+            0
+
+        Just Users ->
+            1
+
+        Just NewUser ->
+            1
+
+        _ ->
+            2
 
 
 view : Model -> Html Msg
 view model =
     Layout.render Mdl
         model.mdl
-        [ Layout.selectedTab model.currentTab
+        [ Layout.selectedTab <| routeToTab model
         , Layout.onSelectTab SelectTab
         , Layout.fixedHeader
         ]
