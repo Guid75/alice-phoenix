@@ -10,7 +10,7 @@ import Route exposing (Location(..))
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case (Debug.log "msg" msg) of
+    case msg of
         Mdl msg' ->
             Material.update msg' model
 

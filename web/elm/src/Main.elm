@@ -38,7 +38,7 @@ urlUpdate : Maybe Route.Location -> Model -> ( Model, Cmd Msg )
 urlUpdate location oldModel =
     let
         newModel =
-            { oldModel | route = Debug.log "location" location }
+            { oldModel | route = location }
     in
         newModel ! [ API.fetchFormations (always NoOp) (FormationMsg' << GotFormations) ]
 
