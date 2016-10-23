@@ -4,7 +4,9 @@ import Material
 import Types exposing (User, Formation)
 import Route
 import Form
+import Http
 import OurHttp
+
 
 type Msg
     = NoOp
@@ -26,5 +28,6 @@ type FormationMsg
     | NewFormationFormMsg Form.Msg
     | CreateFormationSucceeded Formation
     | CreateFormationFailed OurHttp.Error
-
-
+    | DeleteFormation Formation
+    | DeleteFormationSucceeded Formation
+    | DeleteFormationFailed Http.RawError

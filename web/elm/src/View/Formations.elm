@@ -31,7 +31,10 @@ view model =
                 noFormationsView
 
             Just formations ->
-                formationsView model formations
+                if List.isEmpty formations then
+                    noFormationsView
+                else
+                    formationsView model formations
         ]
 
 
@@ -71,14 +74,14 @@ formationsView model formations =
         ]
 
 deleteButton : Model -> Int -> Formation -> Html Msg
-deleteButton model index user =
+deleteButton model index formation =
     Button.render Mdl
         [ 0, 1, index ]
         model.mdl
         [ Button.minifab
         , Button.colored
         , Button.ripple
---        , Button.onClick <| FormationMsg' <| DeleteUser user
+        , Button.onClick <| FormationMsg' <| DeleteFormation formation
         ]
         [ Icon.i "delete" ]
 

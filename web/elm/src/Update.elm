@@ -63,6 +63,9 @@ updateFormationMsg msg model =
         GotFormations formations ->
             { model | formations = Just formations } ! []
 
+        CreateFormationFailed error ->
+            model ! []
+
         CreateFormationSucceeded formation ->
             { model | newFormationForm = (Model.initialModel Nothing).newFormationForm } ! [ Navigation.newUrl (Route.urlFor Formations) ]
 
@@ -74,5 +77,11 @@ updateFormationMsg msg model =
                 _ ->
                     { model | newFormationForm = Form.update formMsg model.newFormationForm } ! []
 
-        _ ->
+        DeleteFormation organization ->
+            model ! [ API.deleteFormation organization (FormationMsg' << DeleteFormationFailed) (FormationMsg' << DeleteFormationSucceeded) ]
+
+        DeleteFormationFailed error ->
             model ! []
+
+        DeleteFormationSucceeded organization ->
+            model ! [ API.fetchFormations (always NoOp) (FormationMsg' << GotFormations) ]

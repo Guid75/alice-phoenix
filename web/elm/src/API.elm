@@ -3,6 +3,7 @@ module API
         ( fetchUsers
         , fetchFormations
         , createFormation
+        , deleteFormation
         )
 
 import Json.Encode as JE
@@ -29,6 +30,16 @@ fetchFormations errorMsg msg =
 createFormation : Formation -> (OurHttp.Error -> Msg) -> (Formation -> Msg) -> Cmd Msg
 createFormation formation errorMsg msg =
     post "/api/formations" (encodeFormation formation) formationDecoder errorMsg msg
+
+
+deleteFormation : Formation -> (Http.RawError -> Msg) -> (Formation -> Msg) -> Cmd Msg
+deleteFormation formation errorMsg msg =
+    case formation.id of
+        Nothing ->
+            Cmd.none
+
+        Just id ->
+            delete ("/api/formations/" ++ (toString id)) errorMsg (msg formation)
 
 
 defaultRequest : String -> Http.Request
@@ -61,6 +72,17 @@ post path encoded decoder errorMsg msg =
             }
             |> OurHttp.fromJson ("data" := decoder)
             |> Task.perform errorMsg msg
+
+
+delete : String -> (Http.RawError -> Msg) -> Msg -> Cmd Msg
+delete path errorMsg msg =
+    let
+        request =
+            defaultRequest path
+    in
+        Http.send Http.defaultSettings
+            { request | verb = "DELETE" }
+            |> Task.perform errorMsg (always msg)
 
 
 encodeFormation : Formation -> JE.Value
