@@ -9,7 +9,6 @@ defmodule Alice.FormationController do
   end
 
   def create(conn, %{"formation" => formation_params}) do
-    IO.puts "pouert"
     changeset = Formation.changeset(%Formation{}, formation_params)
 
     case Repo.insert(changeset) do

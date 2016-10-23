@@ -7,6 +7,8 @@ module Model
 import Material
 import Types exposing (User, Formation)
 import Route
+import Form exposing (Form)
+import Validators
 
 
 type alias Model =
@@ -15,6 +17,7 @@ type alias Model =
     , currentTab : Int
     , users : Maybe (List User)
     , formations : Maybe (List Formation)
+    , newFormationForm : Form String Formation
     }
 
 
@@ -25,4 +28,5 @@ initialModel location =
     , currentTab = 0
     , users = Nothing
     , formations = Nothing
+    , newFormationForm = Form.initial [] Validators.validateNewFormation
     }

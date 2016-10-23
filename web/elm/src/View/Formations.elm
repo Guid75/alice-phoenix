@@ -31,7 +31,7 @@ view model =
                 noFormationsView
 
             Just formations ->
-                formationsView formations
+                formationsView model formations
         ]
 
 
@@ -42,8 +42,8 @@ noFormationsView =
         [ text "<No formations>" ]
 
 
-formationsView : List Formation -> Html Msg
-formationsView formations =
+formationsView : Model ->  List Formation -> Html Msg
+formationsView model formations =
     Table.table
         [ Options.css "margin" "5px 5px"
         ]
@@ -51,16 +51,51 @@ formationsView formations =
             [ Table.tr []
                 [ Table.th [] [ text "Title" ]
                 , Table.th [] [ text "Id" ]
+                , Table.th [] [ text "Actions" ]
                 ]
             ]
         , Table.tbody []
             (formations
-                |> List.map
-                    (\formation ->
+                |> List.indexedMap
+                    (\index formation ->
                         Table.tr []
                             [ Table.td [] [ text formation.title ]
                             , Table.td [] [ text <| toString <| Maybe.withDefault 0 formation.id ]
+                            , Table.td []
+                                [ editButton model index formation
+                                , deleteButton model index formation
+                                ]
                             ]
                     )
             )
         ]
+
+deleteButton : Model -> Int -> Formation -> Html Msg
+deleteButton model index user =
+    Button.render Mdl
+        [ 0, 1, index ]
+        model.mdl
+        [ Button.minifab
+        , Button.colored
+        , Button.ripple
+--        , Button.onClick <| FormationMsg' <| DeleteUser user
+        ]
+        [ Icon.i "delete" ]
+
+
+editButton : Model -> Int -> Formation -> Html Msg
+editButton model index user =
+    case user.id of
+        Nothing ->
+            text ""
+
+        Just id ->
+            Button.render Mdl
+                [ 0, 2, index ]
+                model.mdl
+                [ Button.minifab
+                , Button.colored
+                , Button.ripple
+--                , Button.onClick <| NavigateTo <| Just <| EditFormation id
+                ]
+                [ Icon.i "edit" ]

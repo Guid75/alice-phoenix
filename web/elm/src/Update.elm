@@ -6,6 +6,7 @@ import Model exposing (Model)
 import Msg exposing (Msg(..), UserMsg(..), FormationMsg(..))
 import API
 import Route exposing (Location(..))
+import Form
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -22,9 +23,14 @@ update msg model =
 
         SelectTab tab ->
             case tab of
-                0 -> model ! [ Navigation.newUrl (Route.urlFor Formations) ]
-                1 -> model ! [ Navigation.newUrl (Route.urlFor Users) ]
-                _ -> model ! [ Navigation.newUrl (Route.urlFor Home) ]
+                0 ->
+                    model ! [ Navigation.newUrl (Route.urlFor Formations) ]
+
+                1 ->
+                    model ! [ Navigation.newUrl (Route.urlFor Users) ]
+
+                _ ->
+                    model ! [ Navigation.newUrl (Route.urlFor Home) ]
 
         NavigateTo maybeLocation ->
             case maybeLocation of
@@ -56,3 +62,17 @@ updateFormationMsg msg model =
 
         GotFormations formations ->
             { model | formations = Just formations } ! []
+
+        CreateFormationSucceeded formation ->
+            { model | newFormationForm = (Model.initialModel Nothing).newFormationForm } ! [ Navigation.newUrl (Route.urlFor Formations) ]
+
+        NewFormationFormMsg formMsg ->
+            case ( formMsg, Form.getOutput model.newFormationForm ) of
+                ( Form.Submit, Just formation ) ->
+                    model ! [ API.createFormation formation (FormationMsg' << CreateFormationFailed) (FormationMsg' << CreateFormationSucceeded) ]
+
+                _ ->
+                    { model | newFormationForm = Form.update formMsg model.newFormationForm } ! []
+
+        _ ->
+            model ! []

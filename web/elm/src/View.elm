@@ -1,6 +1,7 @@
 module View exposing (view)
 
 import Html exposing (..)
+import Html.Attributes exposing (id)
 import Material
 import Material.Scheme
 import Material.Button as Button
@@ -12,6 +13,7 @@ import Material.Color as Color
 import Model exposing (Model)
 import Msg exposing (Msg(..))
 import View.Formations
+import View.Formations.New
 import Route exposing (Location(..))
 
 
@@ -27,7 +29,7 @@ getContent model =
             View.Formations.view model
 
         Just NewFormation ->
-            View.Formations.view model
+            View.Formations.New.view model
 
         Just Users ->
             studentsTab model
@@ -69,9 +71,9 @@ view model =
         { header = [ Layout.row [] [ Layout.title [] [ text "ALICE" ] ] ]
         , drawer = []
         , tabs =
-            ( [ text "formations"
-              , text "Students"
-              , text "Another thing"
+            ( [ div [ id "formations" ] [ text "formations" ]
+              , div [ id "students" ] [ text "Students" ]
+              , div [ id "another" ] [ text "Another thing" ]
               ]
             , [ Color.background (Color.color Color.Teal Color.S400) ]
             )

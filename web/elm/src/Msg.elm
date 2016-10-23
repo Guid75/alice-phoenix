@@ -3,6 +3,8 @@ module Msg exposing (Msg(..), UserMsg(..), FormationMsg(..))
 import Material
 import Types exposing (User, Formation)
 import Route
+import Form
+import OurHttp
 
 type Msg
     = NoOp
@@ -21,3 +23,8 @@ type UserMsg
 type FormationMsg
     = FetchFormations
     | GotFormations (List Formation)
+    | NewFormationFormMsg Form.Msg
+    | CreateFormationSucceeded Formation
+    | CreateFormationFailed OurHttp.Error
+
+

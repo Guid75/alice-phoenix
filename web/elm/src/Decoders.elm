@@ -1,4 +1,4 @@
-module Decoders exposing (usersDecoder, formationsDecoder)
+module Decoders exposing (usersDecoder, formationsDecoder, formationDecoder)
 
 import Json.Decode as JD exposing ((:=))
 import Types exposing (User, Formation)
@@ -22,7 +22,7 @@ userDecoder =
 
 formationsDecoder : JD.Decoder (List Formation)
 formationsDecoder =
-    JD.at [ "data" ] <| JD.list formationDecoder
+    JD.list formationDecoder
 
 
 formationDecoder : JD.Decoder Formation
