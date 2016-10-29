@@ -24,6 +24,7 @@ defmodule Alice.Router do
     pipe_through :api
 
     resources "/formations", FormationController, except: [:new, :edit]
-    resources "/users", UserController, except: [:new, :edit]
+    resources "/students", StudentController, except: [:new, :edit]
+    resources "/teachers", TeacherController, except: [:new, :edit]
   end
 end

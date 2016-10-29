@@ -44,10 +44,10 @@ routeHeaderText route =
         Home ->
             "Dashboard"
 
-        Users ->
+        Students ->
             "Students"
 
-        NewUser ->
+        NewStudent ->
             "New Student"
 
         _ ->

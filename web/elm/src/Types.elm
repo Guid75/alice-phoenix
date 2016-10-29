@@ -1,32 +1,29 @@
 module Types
     exposing
-        ( User
+        ( Student
+        , Teacher
         , Formation
         )
 
--- type alias Student =
---     { id : Maybe Int
---     , firstName : String
---     , lastName : String
---     }
--- type alias Teacher =
---     { id : Maybe Int
---     , firstName : String
---     , lastName : string
---     }
-
-
-type alias User =
+type alias Student =
     { id : Maybe Int
     , firstName : String
     , lastName : String
     }
 
 
-type Profile
-    = Admin
-    | Teacher
-    | Student
+type alias Teacher =
+    { id : Maybe Int
+    , firstName : String
+    , lastName : String
+    }
+
+
+type alias Admin =
+    { id : Maybe Int
+    , firstName : String
+    , lastName : String
+    }
 
 
 type alias Formation =

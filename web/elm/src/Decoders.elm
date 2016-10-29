@@ -1,32 +1,51 @@
-module Decoders exposing (usersDecoder, formationsDecoder, formationDecoder)
+module Decoders
+    exposing
+        ( studentDecoder
+        , studentsDecoder
+        , teacherDecoder
+        , teachersDecoder
+        , formationDecoder
+        , formationsDecoder
+        )
 
-import Json.Decode as JD exposing ((:=))
-import Types exposing (User, Formation)
-
-
--- TODO: remove the JSON.at() by moving the removal logic into the API
-
-
-usersDecoder : JD.Decoder (List User)
-usersDecoder =
-    JD.at [ "data" ] <| JD.list userDecoder
-
-
-userDecoder : JD.Decoder User
-userDecoder =
-    JD.object3 User
-        (JD.maybe ("id" := JD.int))
-        ("firstName" := JD.string)
-        ("lastName" := JD.string)
+import Json.Decode exposing (int, list, string, Decoder)
+import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded, nullable)
+import Types exposing (Student, Teacher, Formation)
 
 
-formationsDecoder : JD.Decoder (List Formation)
+studentsDecoder : Decoder (List Student)
+studentsDecoder =
+    list studentDecoder
+
+
+studentDecoder : Decoder Student
+studentDecoder =
+    decode Student
+        |> required "id" (nullable int)
+        |> required "firstName" string
+        |> required "lastName" string
+
+
+teachersDecoder : Decoder (List Teacher)
+teachersDecoder =
+    list teacherDecoder
+
+
+teacherDecoder : Decoder Teacher
+teacherDecoder =
+    decode Teacher
+        |> required "id" (nullable int)
+        |> required "firstName" string
+        |> required "lastName" string
+
+
+formationsDecoder : Decoder (List Formation)
 formationsDecoder =
-    JD.list formationDecoder
+    list formationDecoder
 
 
-formationDecoder : JD.Decoder Formation
+formationDecoder : Decoder Formation
 formationDecoder =
-    JD.object2 Formation
-        (JD.maybe ("id" := JD.int))
-        ("title" := JD.string)
+    decode Formation
+        |> required "id" (nullable int)
+        |> required "title" string

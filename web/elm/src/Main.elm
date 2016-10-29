@@ -8,7 +8,7 @@ import Material.Layout as Layout
 import Model exposing (Model)
 import Update exposing (update)
 import View exposing (view)
-import Msg exposing (Msg(..), FormationMsg(..))
+import Msg exposing (Msg(..), FormationMsg(..), StudentMsg(..))
 import API
 import Route
 
@@ -40,7 +40,10 @@ urlUpdate location oldModel =
         newModel =
             { oldModel | route = location }
     in
-        newModel ! [ API.fetchFormations (always NoOp) (FormationMsg' << GotFormations) ]
+        newModel
+            ! [ API.fetchFormations (always NoOp) (FormationMsg' << GotFormations)
+              , API.fetchStudents (always NoOp) (StudentMsg' << GotStudents)
+              ]
 
 
 

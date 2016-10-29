@@ -1,6 +1,9 @@
 module API
     exposing
-        ( fetchUsers
+        ( fetchStudents
+        , createStudent
+        , deleteStudent
+        , fetchTeachers
         , fetchFormations
         , createFormation
         , deleteFormation
@@ -10,16 +13,43 @@ import Json.Encode as JE
 import Json.Decode as JD
 import Http
 import Task
-import Msg exposing (Msg(..), UserMsg(..), FormationMsg(..))
-import Decoders exposing (usersDecoder, formationsDecoder, formationDecoder)
+import Msg exposing (Msg(..), StudentMsg(..), TeacherMsg(..), FormationMsg(..))
+import Decoders
+    exposing
+        ( studentDecoder
+        , studentsDecoder
+        , teachersDecoder
+        , formationDecoder
+        , formationsDecoder
+        )
 import Json.Decode exposing ((:=))
-import Types exposing (User, Formation)
+import Types exposing (Student, Teacher, Formation)
 import OurHttp
 
 
-fetchUsers : (Http.Error -> Msg) -> (List User -> Msg) -> Cmd Msg
-fetchUsers errorMsg msg =
-    get "/api/users" usersDecoder errorMsg msg
+fetchStudents : (Http.Error -> Msg) -> (List Student -> Msg) -> Cmd Msg
+fetchStudents errorMsg msg =
+    get "/api/students" studentsDecoder errorMsg msg
+
+
+createStudent : Student -> (OurHttp.Error -> Msg) -> (Student -> Msg) -> Cmd Msg
+createStudent student errorMsg msg =
+    post "/api/students" (encodeStudent student) studentDecoder errorMsg msg
+
+
+deleteStudent : Student -> (Http.RawError -> Msg) -> (Student -> Msg) -> Cmd Msg
+deleteStudent student errorMsg msg =
+    case student.id of
+        Nothing ->
+            Cmd.none
+
+        Just id ->
+            delete ("/api/students/" ++ (toString id)) errorMsg (msg student)
+
+
+fetchTeachers : (Http.Error -> Msg) -> (List Teacher -> Msg) -> Cmd Msg
+fetchTeachers errorMsg msg =
+    get "/api/teachers" teachersDecoder errorMsg msg
 
 
 fetchFormations : (Http.Error -> Msg) -> (List Formation -> Msg) -> Cmd Msg
@@ -91,6 +121,18 @@ encodeFormation formation =
         [ ( "formation"
           , JE.object
                 [ ( "title", JE.string formation.title )
+                ]
+          )
+        ]
+
+
+encodeStudent : Student -> JE.Value
+encodeStudent student =
+    JE.object
+        [ ( "student"
+          , JE.object
+                [ ( "firstName", JE.string student.firstName )
+                , ( "lastName", JE.string student.lastName )
                 ]
           )
         ]

@@ -3,6 +3,7 @@
 /db
 /deps
 /*.ez
+*~
 
 /web/elm/elm-stuff
 /web/static/vendor/main.js

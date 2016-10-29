@@ -14,6 +14,8 @@ import Model exposing (Model)
 import Msg exposing (Msg(..))
 import View.Formations
 import View.Formations.New
+import View.Students
+import View.Students.New
 import View.Helpers as Helpers
 import Route exposing (Location(..))
 
@@ -32,11 +34,11 @@ getContent model =
         Just NewFormation ->
             View.Formations.New.view model
 
-        Just Users ->
-            studentsTab model
+        Just Students ->
+            View.Students.view model
 
-        Just NewUser ->
-            studentsTab model
+        Just NewStudent ->
+            View.Students.New.view model
 
         _ ->
             div [] []
@@ -51,10 +53,10 @@ routeToTab model =
         Just NewFormation ->
             0
 
-        Just Users ->
+        Just Students ->
             1
 
-        Just NewUser ->
+        Just NewStudent ->
             1
 
         _ ->
@@ -71,7 +73,7 @@ type alias MenuItem =
 menuItems : List MenuItem
 menuItems =
     [ { text = "Formations", iconName = "group", route = Just Formations }
-    , { text = "Students", iconName = "group", route = Just Users }
+    , { text = "Students", iconName = "group", route = Just Students }
     , { text = "Workshops", iconName = "alarm", route = Nothing }
     ]
 
@@ -110,6 +112,15 @@ header model =
         Just Formations ->
             View.Formations.header model
 
+        Just NewFormation ->
+            View.Formations.header model
+
+        Just Students ->
+            View.Students.header model
+
+        Just NewStudent ->
+            View.Students.header model
+
         Nothing ->
             Helpers.defaultHeader model "ALICE"
 
@@ -132,44 +143,3 @@ view model =
         , main = [ getContent model ]
         }
         |> Material.Scheme.topWithScheme Color.Teal Color.Red
-
-
-
---WithScheme Color.Teal Color.Red
--- view : Model -> Html Msg
--- view model =
---     (div
---      []
---      <|
---         List.concat
---             [ [ Tabs.render Mdl
---                     [ 0 ]
---                     model.mdl
---                     [ Tabs.ripple
---                     , Tabs.onSelectTab SelectTab
---                     , Tabs.activeTab model.tab
---                     ]
---                     [ Tabs.label
---                         [ Options.center ]
---                         [ Icon.i "info_outline"
---                         , Options.span [ css "width" "4px" ] []
---                         , text "Formations"
---                         ]
---                     , Tabs.label
---                         [ Options.center ]
---                         [ Icon.i "code"
---                         , Options.span [ css "width" "4px" ] []
---                         , text "Students"
---                         ]
---                     ]
---                     [ case model.tab of
---                         0 ->
---                             --App.map FormationsMsg <| Formation.View.root model.formations
---                             View.Formations.view model
---                         _ ->
---                             studentsTab model
---                     ]
---               ]
---             ]
---     )
---         |> Material.Scheme.top

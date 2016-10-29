@@ -1,8 +1,8 @@
-defmodule Alice.Repo.Migrations.CreateUser do
+defmodule Alice.Repo.Migrations.CreateStudent do
   use Ecto.Migration
 
   def change do
-    create table(:users) do
+    create table(:students) do
       add :firstName, :string
       add :lastName, :string
 

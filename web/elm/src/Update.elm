@@ -3,7 +3,7 @@ module Update exposing (update)
 import Material
 import Navigation
 import Model exposing (Model)
-import Msg exposing (Msg(..), UserMsg(..), FormationMsg(..))
+import Msg exposing (Msg(..), StudentMsg(..), TeacherMsg(..), FormationMsg(..))
 import API
 import Route exposing (Location(..))
 import Form
@@ -15,8 +15,11 @@ update msg model =
         Mdl msg' ->
             Material.update msg' model
 
-        UserMsg' msg ->
-            updateUserMsg msg model
+        StudentMsg' msg ->
+            updateStudentMsg msg model
+
+        TeacherMsg' msg ->
+            updateTeacherMsg msg model
 
         FormationMsg' msg ->
             updateFormationMsg msg model
@@ -27,7 +30,7 @@ update msg model =
                     model ! [ Navigation.newUrl (Route.urlFor Formations) ]
 
                 1 ->
-                    model ! [ Navigation.newUrl (Route.urlFor Users) ]
+                    model ! [ Navigation.newUrl (Route.urlFor Students) ]
 
                 _ ->
                     model ! [ Navigation.newUrl (Route.urlFor Home) ]
@@ -44,14 +47,48 @@ update msg model =
             model ! []
 
 
-updateUserMsg : UserMsg -> Model -> ( Model, Cmd Msg )
-updateUserMsg msg model =
-    case Debug.log "updateUserMsg" msg of
-        FetchUsers ->
-            model ! [ API.fetchUsers (always NoOp) (UserMsg' << GotUsers) ]
+updateStudentMsg : StudentMsg -> Model -> ( Model, Cmd Msg )
+updateStudentMsg msg model =
+    case msg of
+        FetchStudents ->
+            model ! [ API.fetchStudents (always NoOp) (StudentMsg' << GotStudents) ]
 
-        GotUsers users ->
-            { model | users = Just users } ! []
+        GotStudents students ->
+            { model | students = Just students } ! []
+
+        CreateStudentFailed error ->
+            model ! []
+
+        CreateStudentSucceeded student ->
+            { model | newStudentForm = (Model.initialModel Nothing).newStudentForm } ! [ Navigation.newUrl (Route.urlFor Students) ]
+
+        NewStudentFormMsg formMsg ->
+            case ( formMsg, Form.getOutput model.newStudentForm ) of
+                ( Form.Submit, Just student ) ->
+                    model ! [ API.createStudent student (StudentMsg' << CreateStudentFailed) (StudentMsg' << CreateStudentSucceeded) ]
+
+                _ ->
+                    { model | newStudentForm = Form.update formMsg model.newStudentForm } ! []
+
+        DeleteStudent organization ->
+            model ! [ API.deleteStudent organization (StudentMsg' << DeleteStudentFailed) (StudentMsg' << DeleteStudentSucceeded) ]
+
+        DeleteStudentFailed error ->
+            model ! []
+
+        DeleteStudentSucceeded organization ->
+            model ! [ API.fetchStudents (always NoOp) (StudentMsg' << GotStudents) ]
+
+
+
+updateTeacherMsg : TeacherMsg -> Model -> ( Model, Cmd Msg )
+updateTeacherMsg msg model =
+    case msg of
+        FetchTeachers ->
+            model ! [ API.fetchTeachers (always NoOp) (TeacherMsg' << GotTeachers) ]
+
+        GotTeachers students ->
+            { model | students = Just students } ! []
 
 
 updateFormationMsg : FormationMsg -> Model -> ( Model, Cmd Msg )

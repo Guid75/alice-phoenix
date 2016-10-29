@@ -6,8 +6,8 @@ import Navigation
 
 type Location
     = Home
-    | Users
-    | NewUser
+    | Students
+    | NewStudent
     | Formations
     | NewFormation
 
@@ -28,16 +28,16 @@ urlFor loc =
                 Home ->
                     "/"
 
-                Users ->
-                    "/users"
+                Students ->
+                    "/students"
 
-                NewUser ->
-                    "/users/new"
+                NewStudent ->
+                    "/students/new"
 
-                -- ShowUser id ->
+                -- ShowStudent id ->
                 --     "/users/" ++ (toString id)
 
-                -- EditUser id ->
+                -- EditStudent id ->
                 --     "/users/" ++ (toString id) ++ "/edit"
 
                 Formations ->
@@ -67,11 +67,11 @@ locFor path =
             [] ->
                 Just Home
 
-            [ "users" ] ->
-                Just Users
+            [ "students" ] ->
+                Just Students
 
-            [ "users", "new" ] ->
-                Just NewUser
+            [ "students", "new" ] ->
+                Just NewStudent
 
             -- [ "users", stringId ] ->
             --     case String.toInt stringId of

@@ -1,7 +1,7 @@
-defmodule Alice.User do
+defmodule Alice.Student do
   use Alice.Web, :model
 
-  schema "users" do
+  schema "students" do
     field :firstName, :string
     field :lastName, :string
 

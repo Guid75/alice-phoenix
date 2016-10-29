@@ -1,7 +1,13 @@
-module Msg exposing (Msg(..), UserMsg(..), FormationMsg(..))
+module Msg
+    exposing
+        ( Msg(..)
+        , StudentMsg(..)
+        , TeacherMsg(..)
+        , FormationMsg(..)
+        )
 
 import Material
-import Types exposing (User, Formation)
+import Types exposing (Student, Teacher, Formation)
 import Route
 import Form
 import Http
@@ -10,16 +16,28 @@ import OurHttp
 
 type Msg
     = NoOp
-    | UserMsg' UserMsg
+    | StudentMsg' StudentMsg
+    | TeacherMsg' TeacherMsg
     | FormationMsg' FormationMsg
     | Mdl (Material.Msg Msg)
     | NavigateTo (Maybe Route.Location)
     | SelectTab Int
 
 
-type UserMsg
-    = FetchUsers
-    | GotUsers (List User)
+type StudentMsg
+    = FetchStudents
+    | GotStudents (List Student)
+    | NewStudentFormMsg Form.Msg
+    | CreateStudentSucceeded Student
+    | CreateStudentFailed OurHttp.Error
+    | DeleteStudent Student
+    | DeleteStudentSucceeded Student
+    | DeleteStudentFailed Http.RawError
+
+
+type TeacherMsg
+    = FetchTeachers
+    | GotTeachers (List Teacher)
 
 
 type FormationMsg
