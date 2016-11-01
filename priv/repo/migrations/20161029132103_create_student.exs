@@ -5,6 +5,7 @@ defmodule Alice.Repo.Migrations.CreateStudent do
     create table(:students) do
       add :firstName, :string
       add :lastName, :string
+	  add :formation_id, references(:formations)
 
       timestamps()
     end

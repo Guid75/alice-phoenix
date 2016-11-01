@@ -10,6 +10,7 @@ type Location
     | NewStudent
     | Formations
     | NewFormation
+    | Workshops
 
 
 type alias Model =
@@ -51,6 +52,8 @@ urlFor loc =
 
                 -- EditOrganization id ->
                 --     "/organizations/" ++ (toString id) ++ "/edit"
+                Workshops ->
+                    "/workshops"
     in
         "#" ++ url
 
@@ -88,6 +91,9 @@ locFor path =
 
             [ "formations", "new" ] ->
                 Just NewFormation
+
+            [ "workshops" ] ->
+                Just Workshops
 
             -- [ "organizations", stringId ] ->
             --     case String.toInt stringId of

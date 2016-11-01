@@ -3,6 +3,7 @@ defmodule Alice.Formation do
 
   schema "formations" do
     field :title, :string
+	has_many :students, Alice.Student
 
     timestamps()
   end

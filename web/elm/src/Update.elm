@@ -63,7 +63,7 @@ updateStudentMsg msg model =
             { model | newStudentForm = (Model.initialModel Nothing).newStudentForm } ! [ Navigation.newUrl (Route.urlFor Students) ]
 
         NewStudentFormMsg formMsg ->
-            case ( formMsg, Form.getOutput model.newStudentForm ) of
+            case ( Debug.log "formMsg" formMsg, Form.getOutput model.newStudentForm ) of
                 ( Form.Submit, Just student ) ->
                     model ! [ API.createStudent student (StudentMsg' << CreateStudentFailed) (StudentMsg' << CreateStudentSucceeded) ]
 

@@ -19,8 +19,9 @@ view model =
     grid []
         [ cell [ size All 12 ]
             [ firstNameField model
-            , lastNameField model
             ]
+        , cell [ size All 12 ]
+            [ lastNameField model ]
         , cell [ size All 12 ]
             [ submitButton model
             , cancelButton model
@@ -38,7 +39,7 @@ firstNameField model =
             Form.getFieldAsString "firstName" form
     in
         Textfield.render Mdl
-            [ 1, 0 ]
+            [ 0 ]
             model.mdl
             ([ Textfield.label "First name"
              , Textfield.floatingLabel
@@ -62,7 +63,7 @@ lastNameField model =
             Form.getFieldAsString "lastName" form
     in
         Textfield.render Mdl
-            [ 1, 0 ]
+            [ 1 ]
             model.mdl
             ([ Textfield.label "Last name"
              , Textfield.floatingLabel

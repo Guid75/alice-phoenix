@@ -1,7 +1,7 @@
 module View exposing (view)
 
 import Html exposing (..)
-import Html.Attributes exposing (id)
+import Html.Attributes exposing (id, style)
 import Material
 import Material.Scheme
 import Material.Button as Button
@@ -10,6 +10,8 @@ import Material.Icon as Icon
 import Material.Layout as Layout
 import Material.Options as Options exposing (css, when)
 import Material.Color as Color
+import Material.Card as Card
+import Material.Elevation as Elevation
 import Model exposing (Model)
 import Msg exposing (Msg(..))
 import View.Formations
@@ -20,9 +22,26 @@ import View.Helpers as Helpers
 import Route exposing (Location(..))
 
 
-studentsTab : Model -> Html Msg
-studentsTab model =
-    text "students"
+testing : Model -> Html Msg
+testing model =
+    Options.div
+        [ css "margins" "12" ]
+        [ Card.view
+            [ Elevation.e4
+            , Color.background Color.white
+            ]
+            [ Card.title
+                []
+                [ Card.head [] [ text "Première Agri" ]
+                , Card.subhead [] [ text "23 élèves" ]
+                ]
+            , Card.text
+                []
+                [ div [] [ text "Guillaume Denry" ]
+                , div [] [ text "Vincent Denry" ]
+                ]
+            ]
+        ]
 
 
 getContent : Model -> Html Msg
@@ -41,7 +60,11 @@ getContent model =
             View.Students.New.view model
 
         _ ->
-            div [] []
+            testing model
+
+
+
+--            div [] []
 
 
 routeToTab : Model -> Int
@@ -74,7 +97,7 @@ menuItems : List MenuItem
 menuItems =
     [ { text = "Formations", iconName = "group", route = Just Formations }
     , { text = "Students", iconName = "group", route = Just Students }
-    , { text = "Workshops", iconName = "alarm", route = Nothing }
+    , { text = "Workshops", iconName = "alarm", route = Just Workshops }
     ]
 
 

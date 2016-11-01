@@ -4,6 +4,7 @@ defmodule Alice.Student do
   schema "students" do
     field :firstName, :string
     field :lastName, :string
+	belongs_to :formation, Alice.Formation
 
     timestamps()
   end
